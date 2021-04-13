@@ -27,3 +27,5 @@ Other important features DBT supports are:
   * Generate documentation for the generated tables and columns (through compassion YAML files)
   * Create sandbox environments by replacing the schema for each generated node with a sandbox schema (select * from “sandbox”.”base_table”)
   * Allowing the DRYing up of SQL code using macros
+
+Finally, DBT allows you to specify that you'd only like to construct tables matching a file path selector (and some other kinds of selectors, like all the upstream dependencies of file path selected models).

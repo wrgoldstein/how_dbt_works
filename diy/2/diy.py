@@ -20,6 +20,13 @@ env = jinja2.Environment(
 env.globals.update(ref=ref)
 
 
+for macro in pathlib.Path("macros").glob("**/*.sql"):
+    m = env.from_string(macro.read_text())
+    macros = [x for x in dir(m.module) if not x.startswith("_")]
+    for macro in macros: 
+        env.globals[macro] = getattr(m.module, macro)
+
+
 for model in pathlib.Path(".").glob("**/*.sql"):
     Engine.current = model.stem
     t = env.from_string(model.read_text())
@@ -32,7 +39,17 @@ ts = graphlib.TopologicalSorter(graph)
 
 node_order = list(ts.static_order())
 
-assert node_order == ["bar", "foo"]
+expected = """
+select 
+case
+  when trim(maybe_blank)  = '' then null
+  else maybe_blank
+end from public.baz""".strip()
+
+
+compiled = Engine.graph["bar"]["compiled"]
+
+assert expected == compiled
 
 # from psycopg2 import connect
 
