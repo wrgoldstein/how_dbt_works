@@ -71,4 +71,8 @@ Finally, the Graph is turned into a GraphQueue, the subset of selected nodes (us
 
 ### Selection
 
-I'm not totally sure how this works, but dbt uses the selection syntax from the CLI to 
+I haven't investigated how this works, but dbt uses the selection syntax from the CLI to filter the graph to just the selection.
+
+### Execution
+
+The relevant Runner implements `execute`, which for the run operation fetches the appropriate materialization macro, renders the template, and runs the SQL against the database.
